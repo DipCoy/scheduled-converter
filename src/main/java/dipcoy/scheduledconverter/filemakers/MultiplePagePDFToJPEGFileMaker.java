@@ -1,16 +1,15 @@
 package dipcoy.scheduledconverter.filemakers;
 
 import java.io.File;
-import java.nio.file.Path;
 
 import org.apache.commons.io.FilenameUtils;
 
-public class PDFToJPEGFileMaker implements FileMaker{
+public class MultiplePagePDFToJPEGFileMaker implements FileMaker {
     private final File pdf;
     private int currentPage = 0;
-    private File jpegDirectory;
+    private final File jpegDirectory;
 
-    public PDFToJPEGFileMaker(File pdf) {
+    public MultiplePagePDFToJPEGFileMaker(File pdf) {
         this.pdf = pdf;
         jpegDirectory = new File(this.pdf.getParent(), "JPG");
         jpegDirectory.mkdir();

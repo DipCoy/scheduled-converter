@@ -1,6 +1,5 @@
 package dipcoy.scheduledconverter.writers;
 
-import dipcoy.scheduledconverter.exceptions.writer.WriterBaseException;
 import dipcoy.scheduledconverter.exceptions.writer.WriterWriteFileException;
 
 import javax.imageio.ImageIO;
@@ -17,7 +16,7 @@ public final class JPEGWriter implements Writer {
     }
 
     @Override
-    public void write() throws WriterBaseException {
+    public void write() throws WriterWriteFileException {
         ArrayList<File> errorFiles = new ArrayList<>();
         for (ImageAndFile imageAndFile : imagesAndFiles) {
             try {

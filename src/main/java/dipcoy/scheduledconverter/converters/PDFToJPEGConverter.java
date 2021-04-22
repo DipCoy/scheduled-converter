@@ -1,18 +1,15 @@
 package dipcoy.scheduledconverter.converters;
 
 import dipcoy.scheduledconverter.exceptions.converter.ConvertException;
-import dipcoy.scheduledconverter.filemakers.PDFToJPEGFileMaker;
+import dipcoy.scheduledconverter.filemakers.FileMaker;
+import dipcoy.scheduledconverter.filemakers.MultiplePagePDFToJPEGFileMaker;
+import dipcoy.scheduledconverter.filemakers.SinglePagePDFToJPEGFileMaker;
 import dipcoy.scheduledconverter.writers.JPEGWriter;
 import dipcoy.scheduledconverter.writers.Writer;
 import dipcoy.scheduledconverter.exceptions.converter.LoadFileException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
-import org.apache.pdfbox.preflight.parser.PreflightParser;
-import org.apache.pdfbox.preflight.ValidationResult;
-import org.apache.pdfbox.preflight.exception.SyntaxValidationException;
-import org.apache.pdfbox.preflight.PreflightDocument;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +26,7 @@ public class PDFToJPEGConverter implements Converter, AutoCloseable {
 
     private boolean isValid(File file) throws LoadFileException {
         return true;
+        // TODO: PreflightParser throws Error;
         /*ValidationResult result;
         try {
             PreflightParser parser = new PreflightParser(file);
@@ -64,7 +62,12 @@ public class PDFToJPEGConverter implements Converter, AutoCloseable {
     @Override
     public Writer convert() throws ConvertException {
         JPEGWriter writer = new JPEGWriter();
-        PDFToJPEGFileMaker fileMaker = new PDFToJPEGFileMaker(inputFile);
+        FileMaker fileMaker;
+        if (document.getNumberOfPages() == 1) {
+            fileMaker = new SinglePagePDFToJPEGFileMaker(inputFile);
+        } else {
+            fileMaker = new MultiplePagePDFToJPEGFileMaker(inputFile);
+        }
         BufferedImage bufferedImage;
         for (int page = 0; page < document.getNumberOfPages(); ++page) {
             try {
